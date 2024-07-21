@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { Post } from './entity/post.entity';
+import { CreatePostDto } from './dto/createPost.dto';
+import { PostDto } from './dto/post.dto';
+import { UpdatePostDto } from './dto/updatePost.dto';
 
 @Injectable()
 export class PostsService {

@@ -1,4 +1,4 @@
-interface UpdatePostDto {
+export class UpdatePostDto {
   title?: string;
   content?: string;
 }
