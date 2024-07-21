@@ -8,9 +8,9 @@ import {
   Put,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
-import { CreatePostDto } from './dto/createPost.dto';
+import { CreatePostDto } from './dto/create-post.dto';
 import { PostDto } from './dto/post.dto';
-import { UpdatePostDto } from './dto/updatePost.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
 
 @Controller('posts')
 export class PostsController {
