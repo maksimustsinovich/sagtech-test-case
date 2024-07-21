@@ -1,21 +1,22 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Role } from '@prisma/client';
 import { UserDto } from './dto/user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
-import { Role, User } from './entity/user.entity';
+import { User } from './entity/user.entity';
 import { RegisterDto } from '../auth/dto/register.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prismaClient: PrismaClient) {}
+  constructor(private readonly prismaClient: PrismaClient) {
+  }
 
   async getAllUsers(): Promise<UserDto[]> {
-    return await this.prismaClient.user.findMany();
+    return this.prismaClient.user.findMany();
   }
 
   async getUserById(id: number): Promise<UserDto> {
-    return await this.prismaClient.user.findUnique({
+    return this.prismaClient.user.findUnique({
       where: {
         id,
       },
@@ -23,7 +24,7 @@ export class UsersService {
   }
 
   async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<UserDto> {
-    return await this.prismaClient.user.update({
+    return this.prismaClient.user.update({
       where: {
         id,
       },
@@ -43,9 +44,11 @@ export class UsersService {
   }
 
   async getUserByEmail(email: string): Promise<User> {
-    const user = await this.prismaClient.user.findUnique({
+    const user = await this.prismaClient.user.findFirst({
       where: {
-        email,
+        email: {
+          contains: email,
+        },
       },
     });
     if (!user) {
