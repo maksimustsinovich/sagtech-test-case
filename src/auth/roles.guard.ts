@@ -5,23 +5,19 @@ import { Reflector } from '@nestjs/core';
 export class RolesGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
 
+  matchRoles(roles: string[], userRole: string) {
+    return roles.some((role) => role === userRole);
+  }
+
   canActivate(context: ExecutionContext): boolean {
     const roles = this.reflector.get<string[]>('roles', context.getHandler());
+    console.log(roles);
     if (!roles) {
       return true;
     }
-
     const request = context.switchToHttp().getRequest();
-    const userRole = request.user?.role;
-
-    if (!userRole) {
-      return false;
-    }
-
-    if (Array.isArray(userRole)) {
-      return roles.some((role) => userRole.includes(role));
-    } else {
-      return roles.includes(userRole);
-    }
+    const user = request.user;
+    console.log(user.role);
+    return this.matchRoles(roles, user.role);
   }
 }

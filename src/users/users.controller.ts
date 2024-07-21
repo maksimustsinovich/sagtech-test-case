@@ -20,7 +20,7 @@ export class UsersController {
 
   @Get()
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles('admin')
+  @Roles('ADMIN')
   async retrieveAllUsers(): Promise<UserDto[]> {
     return await this.usersService.getAllUsers();
   }
