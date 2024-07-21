@@ -1,4 +1,12 @@
-import { Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { PostsService } from './posts.service';
 
 @Controller('posts')
@@ -6,27 +14,30 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Post()
-  createPost() {
-    return this.postsService.createPost();
+  async createPost(@Body() data: CreatePostDto): Promise<PostDto> {
+    return await this.postsService.createPost(data);
   }
 
   @Get()
-  retrieveAllPosts() {
-    return this.postsService.getAllPosts();
+  async retrieveAllPosts(): Promise<PostDto[]> {
+    return await this.postsService.getAllPosts();
   }
 
   @Get(':id')
-  retrievePostById() {
-    return this.postsService.getPostById();
+  async retrievePostById(@Param('id') id: number): Promise<PostDto> {
+    return await this.postsService.getPostById(id);
   }
 
   @Put(':id')
-  updatePost() {
-    return this.postsService.updatePost();
+  async updatePost(
+    @Param('id') id: number,
+    @Body() data: UpdatePostDto,
+  ): Promise<PostDto> {
+    return await this.postsService.updatePost(id, data);
   }
 
   @Delete(':id')
-  deletePost() {
-    return this.postsService.deletePost();
+  async deletePost(@Param('id') id: number): Promise<void> {
+    return await this.postsService.deletePost(id);
   }
 }
